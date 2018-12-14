@@ -1,0 +1,2 @@
+<input type="text" #input (input)="updateInputValue(input.value)">
+<p *ngIf="(labelBackgroundColor$ | async) as color" [style.color]="'rgb('+color+')'">{{inputValue$ | async}}</p>

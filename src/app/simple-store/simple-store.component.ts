@@ -1,0 +1,40 @@
+import { Component, Inject } from '@angular/core';
+import { DispatcherToken } from '../shared/tokens/dispatch-token';
+import { SendInputValueAction } from './store/simple-store.actions';
+import { InputValueToken } from './tokens';
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
+import {Store} from '@ngrx/store';
+import { SimpleStoreState } from './store/simple-store.state';
+
+@Component({
+  selector: 'app-simple-store',
+  templateUrl: './simple-store.component.html',
+  styleUrls: ['./simple-store.component.css']
+})
+export class SimpleStoreComponent {
+
+  constructor(
+    // we are providing the dispatch function so that the component
+    // won't know about the store at all
+    // also for easy testing
+    @Inject(DispatcherToken)
+    private dispatcher: Function,
+    // same goes for the selector function
+    @Inject(InputValueToken)
+    public inputValue$: Observable<string>,
+    // private store: Store<SimpleStoreState>
+  ) {
+
+    // The selector will not emit value if the value is  the same
+    // as the previous one
+    // this.inputValue$.subscribe(res => console.log(res));
+  }
+
+  public dispatchInputValue(value) {
+    /* After the blur emit input value we dispatch action with SendInputValueAction with
+       input value as payload. */
+    this.dispatcher(new SendInputValueAction(value));
+    // this.store.dispatch(new SendInputValueAction(value))
+  }
+}
